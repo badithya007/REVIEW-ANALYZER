@@ -37,11 +37,6 @@ st.markdown("""
             border-radius: 12px !important;
             padding: 20px 24px !important;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
-            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-        }
-        div[data-testid="stMetric"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
         }
         div[data-testid="stMetricLabel"] {
             font-size: 0.875rem !important;
@@ -67,7 +62,6 @@ st.markdown("""
         }
         .stTabs [data-baseweb="tab"] {
             height: 42px !important;
-            white-space: pre !important;
             background-color: transparent !important;
             border-radius: 6px !important;
             color: #475569 !important;
@@ -75,7 +69,6 @@ st.markdown("""
             font-size: 0.95rem !important;
             padding: 0px 20px !important;
             border: none !important;
-            transition: all 0.2s ease !important;
         }
         
         /* Clean Corporate Form Fields */
@@ -89,7 +82,6 @@ st.markdown("""
         .stButton button {
             border-radius: 8px !important;
             font-weight: 600 !important;
-            transition: all 0.2s ease !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -105,13 +97,11 @@ if "analyzed_data" not in st.session_state:
 def execute_local_nlp_engine(df, text_column):
     df = df.copy()
     dimensions = ["Tangibles", "Reliability", "Responsiveness", "Assurance", "Empathy"]
-    
     scores = []
     dims = []
     
     for text in df[text_column].astype(str):
         text_lower = text.lower()
-        
         if any(w in text_lower for w in ["slow", "wait", "delay", "time", "hour", "respond", "latency"]):
             scores.append(random.uniform(-0.8, -0.2))
             dims.append("Responsiveness")
@@ -139,7 +129,6 @@ def execute_local_nlp_engine(df, text_column):
 with st.sidebar:
     st.title("🔐 Control Center")
     st.markdown("---")
-    
     auth_mode = st.checkbox("Enable Demo Mode (Bypass Auth)", value=True)
     
     if not auth_mode:
@@ -175,14 +164,13 @@ if st.session_state.authenticated:
         st.subheader("Step 1: Data Source Selection")
         ingestion_choice = st.radio(
             "Select Input Type", 
-            ["Direct Paste (Single Review Analysis)", "Spreadsheet Upload (Bulk Engine)"],
-            horizontal=True,
-            label_visibility="collapsed"
+            ["Direct Paste", "Spreadsheet Upload"],
+            horizontal=True
         )
         
         working_df = None
         
-        if ingestion_choice == "Direct Paste (Single Review Analysis)":
+        if ingestion_choice == "Direct Paste":
             raw_input = st.text_area(
                 "Paste Review Text", 
                 "The interface layout is messy and crashes every time I try to run the file exporter. Customer support took hours to get back to me and offered no real help.",
@@ -256,7 +244,6 @@ if st.session_state.authenticated:
             with chart_col1:
                 st.subheader("SERVQUAL Dimension Breakdown")
                 counts = df['SERVQUAL_Dimension'].value_counts().reset_index()
-                
                 fig_bar = px.bar(counts, x='SERVQUAL_Dimension', y='count',
                                  labels={'count': 'Incident Volume', 'SERVQUAL_Dimension': 'Framework Dimension'},
                                  color='SERVQUAL_Dimension',
@@ -287,7 +274,6 @@ if st.session_state.authenticated:
                 st.plotly_chart(fig_box, use_container_width=True, config={'displayModeBar': False})
                 
             st.divider()
-            
             st.subheader("🎯 Automated Prescriptive Actions")
             negative_flags = df[df['Sentiment_Score'] < 0.0]
             
