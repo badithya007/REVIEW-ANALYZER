@@ -53,7 +53,7 @@ st.markdown("""
         div[data-testid="stMetricValue"] {
             font-size: 2.25rem !important;
             font-weight: 800 !important;
-            color: #2563EB !important; /* Deep Royal Corporate Blue */
+            color: #2563EB !important;
             margin-top: 4px !important;
         }
         
@@ -76,11 +76,6 @@ st.markdown("""
             padding: 0px 20px !important;
             border: none !important;
             transition: all 0.2s ease !important;
-        }
-        .stTabs [data-baseweb="tab"]:aria-selected="true" {
-            background-color: #FFFFFF !important;
-            color: #0F172A !important;
-            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1) !important;
         }
         
         /* Clean Corporate Form Fields */
@@ -117,7 +112,6 @@ def execute_local_nlp_engine(df, text_column):
     for text in df[text_column].astype(str):
         text_lower = text.lower()
         
-        # Rule-based linguistic mapping loops to isolate problem statements
         if any(w in text_lower for w in ["slow", "wait", "delay", "time", "hour", "respond", "latency"]):
             scores.append(random.uniform(-0.8, -0.2))
             dims.append("Responsiveness")
@@ -215,7 +209,6 @@ if st.session_state.authenticated:
             st.subheader("Data Schema Validation")
             columns_list = list(working_df.columns)
             
-            # Look for exact sheet matching rules or grab first index
             default_text_index = 0
             for index, col in enumerate(columns_list):
                 if "written comments" in col.lower() or "feedback" in col.lower() or "review" in col.lower():
@@ -249,7 +242,6 @@ if st.session_state.authenticated:
             calculated_csat = df['CSAT_Proxy'].mean()
             net_sentiment = df['Sentiment_Score'].mean()
             
-            # Row 1: KPI Summary Matrix
             st.markdown("<h3 style='margin-bottom:20px;'>💡 Operational Health Indicators</h3>", unsafe_allow_html=True)
             m_col1, m_col2, m_col3 = st.columns(3)
             m_col1.metric("Total Volumes", f"{total_records} Records")
@@ -259,7 +251,6 @@ if st.session_state.authenticated:
             st.markdown("<br>", unsafe_allow_html=True)
             st.divider()
             
-            # Row 2: Visualization Sub-matrix
             chart_col1, chart_col2 = st.columns(2)
             
             with chart_col1:
@@ -297,7 +288,6 @@ if st.session_state.authenticated:
                 
             st.divider()
             
-            # Row 3: Prescriptive Actions Component
             st.subheader("🎯 Automated Prescriptive Actions")
             negative_flags = df[df['Sentiment_Score'] < 0.0]
             
@@ -330,7 +320,6 @@ if st.session_state.authenticated:
             st.markdown("<br>", unsafe_allow_html=True)
             st.divider()
             
-            # Row 4: Corporate Export Pipeline
             st.subheader("📥 Export Pipeline")
             csv_payload = df.to_csv(index=False).encode('utf-8')
             st.download_button(
