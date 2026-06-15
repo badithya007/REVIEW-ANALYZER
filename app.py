@@ -13,78 +13,12 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS Injection for Enterprise-grade Typography, Elements, and Layout Depth
-st.markdown("""
-    <style>
-        /* Base Canvas Background Styling */
-        .stApp {
-            background-color: #F8FAFC;
-            color: #0F172A;
-        }
-        
-        /* Premium Typography Layouts */
-        h1, h2, h3 {
-            font-family: 'Inter', -apple-system, sans-serif !important;
-            font-weight: 700 !important;
-            color: #1E293B !important;
-            letter-spacing: -0.02em !important;
-        }
-        
-        /* Metric Block Glassmorphism Card System */
-        div[data-testid="stMetric"] {
-            background: #FFFFFF !important;
-            border: 1px solid #E2E8F0 !important;
-            border-radius: 12px !important;
-            padding: 20px 24px !important;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
-        }
-        div[data-testid="stMetricLabel"] {
-            font-size: 0.875rem !important;
-            font-weight: 600 !important;
-            color: #64748B !important;
-            text-transform: uppercase !important;
-            letter-spacing: 0.05em !important;
-        }
-        div[data-testid="stMetricValue"] {
-            font-size: 2.25rem !important;
-            font-weight: 800 !important;
-            color: #2563EB !important;
-            margin-top: 4px !important;
-        }
-        
-        /* Elite Navigation Tabs Overhaul */
-        .stTabs [data-baseweb="tab-list"] {
-            gap: 8px !important;
-            background-color: #E2E8F0 !important;
-            padding: 6px !important;
-            border-radius: 10px !important;
-            border-bottom: none !important;
-        }
-        .stTabs [data-baseweb="tab"] {
-            height: 42px !important;
-            background-color: transparent !important;
-            border-radius: 6px !important;
-            color: #475569 !important;
-            font-weight: 600 !important;
-            font-size: 0.95rem !important;
-            padding: 0px 20px !important;
-            border: none !important;
-        }
-        
-        /* Clean Corporate Form Fields */
-        .stTextArea textarea, .stTextInput input, .stSelectbox [data-baseweb="select"] {
-            border-radius: 8px !important;
-            border: 1px solid #CBD5E1 !important;
-            background-color: #FFFFFF !important;
-        }
-        
-        /* Action Button Polish */
-        .stButton button {
-            border-radius: 8px !important;
-            font-weight: 600 !important;
-        }
-    </style>
-""", unsafe_allow_html=True)
+# Inline styling rules using standardized individual elements to avoid parsing errors
+st.markdown("<style>.stApp {background-color: #F8FAFC; color: #0F172A;}</style>", unsafe_allow_html=True)
+st.markdown("<style>h1, h2, h3 {font-family: 'Inter', sans-serif !important; font-weight: 700 !important; color: #1E293B !important;}</style>", unsafe_allow_html=True)
+st.markdown("<style>div[data-testid='stMetric'] {background: #FFFFFF !important; border: 1px solid #E2E8F0 !important; border-radius: 12px !important; padding: 20px !important;}</style>", unsafe_allow_html=True)
+st.markdown("<style>div[data-testid='stMetricLabel'] {font-size: 0.875rem !important; font-weight: 600 !important; color: #64748B !important; text-transform: uppercase !important;}</style>", unsafe_allow_html=True)
+st.markdown("<style>div[data-testid='stMetricValue'] {font-size: 2.25rem !important; font-weight: 800 !important; color: #2563EB !important;}</style>", unsafe_allow_html=True)
 
 # ==========================================
 # 2. STATE & LOCAL ANALYTICS ENGINE
@@ -154,9 +88,9 @@ if st.session_state.authenticated:
     st.divider()
 
     tab1, tab2, tab3 = st.tabs([
-        "📥 Data Ingestion & Configuration", 
-        "📈 Analytics Dashboard", 
-        "📄 Technical Documentation"
+        "Data Ingestion & Configuration", 
+        "Analytics Dashboard", 
+        "Technical Documentation"
     ])
 
     # --- TAB 1: DATA INGESTION ---
