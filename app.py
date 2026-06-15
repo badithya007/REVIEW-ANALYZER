@@ -4,36 +4,101 @@ import plotly.express as px
 import random
 
 # ==========================================
-# 1. INLINE UI THEMING & PAGE CONFIGURATION
+# 1. PREMIUM UI DESIGN SYSTEM CONFIGURATION
 # ==========================================
 st.set_page_config(
     page_title="Customer Feedback Analyzer",
     page_icon="📊",
-    layout="wide", # Enforces a sleek, wide-screen dashboard layout
+    layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Injecting CSS to enforce the premium corporate design system
+# Custom CSS Injection for Enterprise-grade Typography, Elements, and Layout Depth
 st.markdown("""
     <style>
-        /* Base background and text colors */
+        /* Base Canvas Background Styling */
         .stApp {
-            background-color: #F8F9FA;
-            color: #1E293B;
+            background-color: #F8FAFC;
+            color: #0F172A;
         }
-        /* Custom styling for Metric Cards */
-        [data-testid="stMetricValue"] {
-            font-size: 2rem !important;
+        
+        /* Premium Typography Layouts */
+        h1, h2, h3 {
+            font-family: 'Inter', -apple-system, sans-serif !important;
             font-weight: 700 !important;
-            color: #0066CC !important;
+            color: #1E293B !important;
+            letter-spacing: -0.02em !important;
         }
-        /* Tab formatting */
+        
+        /* Metric Block Glassmorphism Card System */
+        div[data-testid="stMetric"] {
+            background: #FFFFFF !important;
+            border: 1px solid #E2E8F0 !important;
+            border-radius: 12px !important;
+            padding: 20px 24px !important;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+            transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+        }
+        div[data-testid="stMetric"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.05) !important;
+        }
+        div[data-testid="stMetricLabel"] {
+            font-size: 0.875rem !important;
+            font-weight: 600 !important;
+            color: #64748B !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.05em !important;
+        }
+        div[data-testid="stMetricValue"] {
+            font-size: 2.25rem !important;
+            font-weight: 800 !important;
+            color: #2563EB !important; /* Deep Royal Corporate Blue */
+            margin-top: 4px !important;
+        }
+        
+        /* Elite Navigation Tabs Overhaul */
+        .stTabs [data-baseweb="tab-list"] {
+            gap: 8px !important;
+            background-color: #E2E8F0 !important;
+            padding: 6px !important;
+            border-radius: 10px !important;
+            border-bottom: none !important;
+        }
         .stTabs [data-baseweb="tab"] {
-            font-weight: 600;
-            font-size: 1.1rem;
+            height: 42px !important;
+            white-space: pre !important;
+            background-color: transparent !important;
+            border-radius: 6px !important;
+            color: #475569 !important;
+            font-weight: 600 !important;
+            font-size: 0.95rem !important;
+            padding: 0px 20px !important;
+            border: none !important;
+            transition: all 0.2s ease !important;
+        }
+        .stTabs [data-baseweb="tab"]:aria-selected="true" {
+            background-color: #FFFFFF !important;
+            color: #0F172A !important;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1) !important;
+        }
+        
+        /* Clean Corporate Form Fields */
+        .stTextArea textarea, .stTextInput input, .stSelectbox [data-baseweb="select"] {
+            border-radius: 8px !important;
+            border: 1px solid #CBD5E1 !important;
+            background-color: #FFFFFF !important;
+        }
+        
+        /* Action Button Polish */
+        .stButton button {
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            transition: all 0.2s ease !important;
         }
     </style>
 """, unsafe_allow_html=True)
+
 # ==========================================
 # 2. STATE & LOCAL ANALYTICS ENGINE
 # ==========================================
@@ -43,10 +108,6 @@ if "analyzed_data" not in st.session_state:
     st.session_state.analyzed_data = None
 
 def execute_local_nlp_engine(df, text_column):
-    """
-    Deterministic rule-based NLP engine. Maps unstructured text 
-    directly to academic SERVQUAL dimensions and calculates CSAT.
-    """
     df = df.copy()
     dimensions = ["Tangibles", "Reliability", "Responsiveness", "Assurance", "Empathy"]
     
@@ -56,18 +117,18 @@ def execute_local_nlp_engine(df, text_column):
     for text in df[text_column].astype(str):
         text_lower = text.lower()
         
-        # Rule-based linguistic mapping loops
-        if any(w in text_lower for w in ["slow", "wait", "delay", "time", "hour", "respond"]):
+        # Rule-based linguistic mapping loops to isolate problem statements
+        if any(w in text_lower for w in ["slow", "wait", "delay", "time", "hour", "respond", "latency"]):
             scores.append(random.uniform(-0.8, -0.2))
             dims.append("Responsiveness")
-        elif any(w in text_lower for w in ["rude", "attitude", "helpful", "friendly", "support"]):
+        elif any(w in text_lower for w in ["rude", "attitude", "helpful", "friendly", "support", "annoying", "privacy"]):
             scores.append(random.uniform(-0.7, -0.1))
             dims.append("Empathy")
-        elif any(w in text_lower for w in ["broken", "crash", "bug", "error", "fail", "freeze"]):
+        elif any(w in text_lower for w in ["broken", "crash", "bug", "error", "fail", "freeze", "sync", "drops"]):
             scores.append(random.uniform(-0.9, -0.3))
             dims.append("Reliability")
-        elif any(w in text_lower for w in ["ui", "layout", "font", "clean", "look", "screen"]):
-            scores.append(random.uniform(0.2, 0.8))
+        elif any(w in text_lower for w in ["ui", "layout", "font", "clean", "look", "screen", "tips", "stiff", "heavy", "bulky"]):
+            scores.append(random.uniform(-0.4, 0.4))
             dims.append("Tangibles")
         else:
             scores.append(random.uniform(0.1, 0.7))
@@ -75,8 +136,6 @@ def execute_local_nlp_engine(df, text_column):
             
     df['Sentiment_Score'] = scores
     df['SERVQUAL_Dimension'] = dims
-    
-    # Academic Math: Mapping Sentiment Polarity [-1, 1] into standard CSAT Scale [1, 5]
     df['CSAT_Proxy'] = ((df['Sentiment_Score'] + 1) * 2) + 1  
     return df
 
@@ -93,10 +152,10 @@ with st.sidebar:
         password = st.text_input("Workspace Security Token", type="password")
         if password == "admin123":
             st.session_state.authenticated = True
-            st.success("Access Granted")
+            st.sidebar.success("Access Granted")
         else:
             st.session_state.authenticated = False
-            st.warning("Locked Status")
+            st.sidebar.warning("Locked Status")
     else:
         st.session_state.authenticated = True
 
@@ -109,8 +168,8 @@ with st.sidebar:
 if st.session_state.authenticated:
     st.title("📊 Customer Feedback Analyzer")
     st.caption("Strategic Enterprise Solution | Academic Sentiment & SERVQUAL Integration Matrix")
-    st.divider()  # <-- FIXED
-    # Application Navigation Tab Architecture
+    st.divider()
+
     tab1, tab2, tab3 = st.tabs([
         "📥 Data Ingestion & Configuration", 
         "📈 Analytics Dashboard", 
@@ -119,11 +178,12 @@ if st.session_state.authenticated:
 
     # --- TAB 1: DATA INGESTION ---
     with tab1:
-        st.header("Step 1: Data Source Selection")
+        st.subheader("Step 1: Data Source Selection")
         ingestion_choice = st.radio(
             "Select Input Type", 
             ["Direct Paste (Single Review Analysis)", "Spreadsheet Upload (Bulk Engine)"],
-            horizontal=True
+            horizontal=True,
+            label_visibility="collapsed"
         )
         
         working_df = None
@@ -131,14 +191,15 @@ if st.session_state.authenticated:
         if ingestion_choice == "Direct Paste (Single Review Analysis)":
             raw_input = st.text_area(
                 "Paste Review Text", 
-                "The interface layout is messy and crashes every time I try to run the file exporter. Customer support took hours to get back to me and offered no real help."
+                "The interface layout is messy and crashes every time I try to run the file exporter. Customer support took hours to get back to me and offered no real help.",
+                height=120
             )
-            if st.button("Ingest Single Record"):
+            if st.button("Ingest Single Record", type="secondary"):
                 working_df = pd.DataFrame({
-                    "Review_Text": [raw_input],
-                    "Timestamp": [pd.Timestamp.now().strftime("%Y-%m-%d %H:%M")]
+                    "Review Feedback / Written Comments (Column G)": [raw_input],
+                    "Customer Name": ["Ad-Hoc User"]
                 })
-                st.success("Record loaded into system memory.")
+                st.success("Record loaded into system memory pool.")
                 
         else:
             uploaded_file = st.file_uploader("Upload CSV or Excel Master Sheets", type=["csv", "xlsx"])
@@ -149,61 +210,75 @@ if st.session_state.authenticated:
                     working_df = pd.read_excel(uploaded_file)
                 st.success(f"Successfully staged {len(working_df)} rows for processing.")
 
-        # Matrix Mapping Configuration Block
         if working_df is not None:
-            st.markdown("---")
+            st.divider()
             st.subheader("Data Schema Validation")
             columns_list = list(working_df.columns)
             
+            # Look for exact sheet matching rules or grab first index
+            default_text_index = 0
+            for index, col in enumerate(columns_list):
+                if "written comments" in col.lower() or "feedback" in col.lower() or "review" in col.lower():
+                    default_text_index = index
+                    break
+            
             col_left, col_right = st.columns(2)
             with col_left:
-                mapped_text_col = st.selectbox("Map Target Content Column (Feedback Text)", columns_list,
-                                               index=columns_list.index("Review_Text") if "Review_Text" in columns_list else 0)
+                mapped_text_col = st.selectbox("Map Target Content Column (Feedback Text)", columns_list, index=default_text_index)
             with col_right:
-                mapped_time_col = st.selectbox("Map Operational Timeline Column (Timestamp)", ["None Override"] + columns_list)
+                mapped_rating_col = st.selectbox("Map Metric Base Column (Rating/Status)", ["None Override"] + columns_list)
             
-            if st.button("🚀 Execute Analytical Core Engine", type="primary"):
+            st.markdown("<br>", unsafe_allow_html=True)
+            if st.button("🚀 Execute Analytical Core Engine", type="primary", use_container_width=True):
                 with st.spinner("Analyzing text frameworks..."):
                     results_df = execute_local_nlp_engine(working_df, mapped_text_col)
                     st.session_state.analyzed_data = results_df
                     st.session_state.text_column_ref = mapped_text_col
                     st.balloons()
-                    st.success("Analysis complete. Proceed to the 'Analytics Dashboard' tab above.")
+                    st.success("Analysis complete! Head over to the 'Analytics Dashboard' tab above.")
 
     # --- TAB 2: ANALYTICS DASHBOARD ---
     with tab2:
         if st.session_state.analyzed_data is None:
-            st.warning("⚠️ No data processed yet. Please use the Ingestion tab to load your data.")
+            st.warning("⚠️ No data processed yet. Please use the Ingestion tab to load your sheets.")
         else:
             df = st.session_state.analyzed_data
             txt_col = st.session_state.text_column_ref
             
-            # Metric Calculation Layer
             total_records = len(df)
             calculated_csat = df['CSAT_Proxy'].mean()
             net_sentiment = df['Sentiment_Score'].mean()
             
-            # High-Level Metric Interface Layout
-            st.subheader("💡 Operational Health Indicators")
+            # Row 1: KPI Summary Matrix
+            st.markdown("<h3 style='margin-bottom:20px;'>💡 Operational Health Indicators</h3>", unsafe_allow_html=True)
             m_col1, m_col2, m_col3 = st.columns(3)
-            m_col1.metric("Total Reviews Processed", f"{total_records} units")
-            m_col2.metric("CSAT Index Score", f"{calculated_csat:.2f} / 5.0")
-            m_col3.metric("Net Sentiment Polarity", f"{net_sentiment:+.2f}")
+            m_col1.metric("Total Volumes", f"{total_records} Records")
+            m_col2.metric("Calculated CSAT Index", f"{calculated_csat:.2f} / 5.0")
+            m_col3.metric("Net Sentiment Score", f"{net_sentiment:+.2f}")
             
-            st.markdown("---")
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.divider()
             
-            # Visual Analytics Split Layout
+            # Row 2: Visualization Sub-matrix
             chart_col1, chart_col2 = st.columns(2)
             
             with chart_col1:
                 st.subheader("SERVQUAL Dimension Breakdown")
                 counts = df['SERVQUAL_Dimension'].value_counts().reset_index()
+                
                 fig_bar = px.bar(counts, x='SERVQUAL_Dimension', y='count',
                                  labels={'count': 'Incident Volume', 'SERVQUAL_Dimension': 'Framework Dimension'},
                                  color='SERVQUAL_Dimension',
-                                 color_discrete_sequence=px.colors.qualitative.Bold)
-                fig_bar.update_layout(showlegend=False, margin=dict(t=10, b=10, l=10, r=10))
-                st.plotly_chart(fig_bar, use_container_width=True)
+                                 color_discrete_sequence=px.colors.qualitative.Prism)
+                fig_bar.update_layout(
+                    showlegend=False, 
+                    margin=dict(t=15, b=15, l=15, r=15),
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)'
+                )
+                fig_bar.update_xaxes(showgrid=False)
+                fig_bar.update_yaxes(showgrid=True, gridcolor='#E2E8F0')
+                st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
                 
             with chart_col2:
                 st.subheader("CSAT Distribution Patterns")
@@ -211,38 +286,51 @@ if st.session_state.authenticated:
                                  color='SERVQUAL_Dimension',
                                  labels={'CSAT_Proxy': 'Calculated CSAT Metric'},
                                  color_discrete_sequence=px.colors.qualitative.Safe)
-                fig_box.update_layout(showlegend=False, margin=dict(t=10, b=10, l=10, r=10))
-                st.plotly_chart(fig_box, use_container_width=True)
+                fig_box.update_layout(
+                    showlegend=False, 
+                    margin=dict(t=15, b=15, l=15, r=15),
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)'
+                )
+                fig_box.update_yaxes(gridcolor='#E2E8F0')
+                st.plotly_chart(fig_box, use_container_width=True, config={'displayModeBar': False})
                 
-            st.markdown("---")
+            st.divider()
             
-            # Prescriptive Action Framework Container
+            # Row 3: Prescriptive Actions Component
             st.subheader("🎯 Automated Prescriptive Actions")
             negative_flags = df[df['Sentiment_Score'] < 0.0]
             
-            with st.expander("✨ View Actionable Remediation Architecture", expanded=True):
+            with st.container():
                 if negative_flags.empty:
                     st.success("Operational thresholds standard. No critical risk patterns identified.")
                 else:
-                    st.markdown("#### High-Priority Operational Mitigations")
-                    
                     card1, card2 = st.columns(2)
                     with card1:
-                        st.error("🚨 **Identified Vulnerability Layer (Responsiveness / Reliability):**")
-                        st.markdown(
-                            "Unstructured feedback patterns point toward friction during data pipeline interactions "
-                            "and performance drop-offs concerning service response times."
-                        )
+                        st.markdown("""
+                            <div style="background-color: #FEF2F2; border-left: 5px solid #EF4444; padding: 20px; border-radius: 8px;">
+                                <h4 style="color: #991B1B; margin-top:0;">🚨 Identified Vulnerability Layer (Responsiveness / Reliability)</h4>
+                                <p style="color: #7F1D1D; margin-bottom:0; font-size:0.95rem;">
+                                    Unstructured feedback patterns point toward friction during data pipeline interactions 
+                                    and performance drop-offs concerning service response times.
+                                </p>
+                            </div>
+                        """, unsafe_allow_html=True)
                     with card2:
-                        st.success("🎯 **Strategic Mitigation Script:**")
-                        st.markdown(
-                            "1. Optimize local indexing to reduce latency and infrastructure timeouts.\n"
-                            "2. Implement standardized internal escalation routing to bring customer queues under a strict 1-hour cap."
-                        )
+                        st.markdown("""
+                            <div style="background-color: #F0FDF4; border-left: 5px solid #22C55E; padding: 20px; border-radius: 8px;">
+                                <h4 style="color: #166534; margin-top:0;">🎯 Strategic Mitigation Script</h4>
+                                <p style="color: #14532D; margin-bottom:0; font-size:0.95rem;">
+                                    1. Optimize local indexing to reduce latency and infrastructure timeouts.<br>
+                                    2. Implement standardized internal escalation routing to bring customer queues under a strict 1-hour cap.
+                                </p>
+                            </div>
+                        """, unsafe_allow_html=True)
 
-            st.markdown("---")
+            st.markdown("<br>", unsafe_allow_html=True)
+            st.divider()
             
-            # Corporate Export Layer
+            # Row 4: Corporate Export Pipeline
             st.subheader("📥 Export Pipeline")
             csv_payload = df.to_csv(index=False).encode('utf-8')
             st.download_button(
@@ -250,7 +338,8 @@ if st.session_state.authenticated:
                 data=csv_payload,
                 file_name="feedback_analyzer_export.csv",
                 mime="text/csv",
-                type="primary"
+                type="primary",
+                use_container_width=True
             )
 
     # --- TAB 3: DOCUMENTATION OVERVIEW ---
